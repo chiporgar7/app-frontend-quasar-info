@@ -1,42 +1,36 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+// import { useAuthStore } from 'src/stores/auth';
+
+const email = ref('');
+const password = ref('');
+const router = useRouter();
+// const authStore = useAuthStore();
+
+const register = async () => {
+  // try {
+  //   await authStore.register(email.value, password.value);
+  //   router.push('/login');
+  // } catch (error) {
+  //   console.error('Registration failed:', error);
+  // }
+};
+</script>
+
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page class="flex flex-center">
+    <q-card style="width: 300px">
+      <q-card-section>
+        <div class="text-h6">Register</div>
+      </q-card-section>
+      <q-card-section>
+        <q-input v-model="email" label="Email" type="email" />
+        <q-input v-model="password" label="Password" type="password" />
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn label="Register" color="primary" @click="register" />
+      </q-card-actions>
+    </q-card>
   </q-page>
 </template>
-
-<script setup lang="ts">
-import { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
-import { ref } from 'vue';
-
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1',
-  },
-  {
-    id: 2,
-    content: 'ct2',
-  },
-  {
-    id: 3,
-    content: 'ct3',
-  },
-  {
-    id: 4,
-    content: 'ct4',
-  },
-  {
-    id: 5,
-    content: 'ct5',
-  },
-]);
-const meta = ref<Meta>({
-  totalCount: 1200,
-});
-</script>

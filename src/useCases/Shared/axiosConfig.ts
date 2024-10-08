@@ -1,25 +1,25 @@
-import { AxiosResponse, AxiosInstance } from 'axios';
+import axios from 'axios';
+import { useAuthStore } from 'src/stores/AuthStore';
 
-export class BaseRepository {
-  protected BASE_URL = 'https://func-ussc-dev-siarh-plantilla-plazas.azurewebsites.net/api';
-  protected axios: AxiosInstance;
 
-  constructor(axiosInstance: AxiosInstance) {
-    this.axios = axiosInstance;
-    const URL_SERVER = process.env.API_MOVIMIENTO_KARDEX;
-    if (URL_SERVER) this.BASE_URL = URL_SERVER;
-  }
+const headers: any = {
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+};
 
-  set BaseURL(url: string) {
-    this.BASE_URL = url;
-  }
+const instanceAxios = axios.create({
+  baseURL: process.env.BASE_URL || '', // o cualquier valor por defecto
+  headers
+  // timeout: 1000,
+});
 
-  get BaseURL() {
-    return this.BASE_URL;
-  }
+instanceAxios.interceptors.request.use(config => {
+  const authStore = useAuthStore();
+  const token = authStore.token;
+  config.headers.Authorization = 'Bearer ' + token;
+  return config;
+});
 
-  protected async request<T>(callback: () => Promise<AxiosResponse<T>>): Promise<T> {
-    const response = await callback();
-    return response.data;
-  }
-}
+// Configuraciones adicionales
+
+export default instanceAxios;
